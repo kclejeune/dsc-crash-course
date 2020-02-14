@@ -320,7 +320,7 @@ So go ahead and create a `controller.js` file and open it. Here, we're going to 
 Add to your controller:
 ```js
 // Initialize express router
-const router = require('express');
+const router = require('express').Router();
 
 //Define default API response
 router.get(
