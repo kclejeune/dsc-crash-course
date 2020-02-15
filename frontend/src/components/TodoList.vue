@@ -44,7 +44,7 @@ export default {
           this.todos = res.body;
         },
         err => {
-          console.err(err);
+          console.warn(err);
           alert("Could not reach database");
         }
       );
@@ -67,7 +67,7 @@ export default {
               this.newTodoText = "";
             },
             failure => {
-              console.err(failure);
+              console.warn(failure);
               alert("Update Failed");
             }
           );
@@ -82,7 +82,7 @@ export default {
           this.refresh();
         },
         failure => {
-          console.error(failure);
+          console.warn(failure);
           alert("Could not delete");
         }
       );
