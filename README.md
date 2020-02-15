@@ -246,6 +246,7 @@ In your terminal type:
 
 ```bash
 > npm install express --save
+> npm install cors
 ```
 
 Lastly, we want to install our database. For ease of use we'll be using `sqlite`, a lightweight database contained in a C program. Sqlite allows us to use a SQL database without having to use a separate application. Typically you would download, install, and configure a SQL database application like PostgreSQL, MySQL, MSSQL, Oracle SQL, etc. One of these applications would give you a fully-featured SQL database with a good GUI, built-in security, lots of memory, better scalability, and more flexibility. However, our application is small and simple. We are prioritizing simplicity over robustness, so sqlite is appropriate here.
