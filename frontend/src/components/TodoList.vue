@@ -20,7 +20,6 @@
 import TodoListItem from "./TodoListItem.vue";
 
 let nextTodoId = 0;
-let placeholderTodos = [];
 
 const API_BASE = "http://localhost:3000";
 
@@ -32,7 +31,7 @@ export default {
   data() {
     return {
       newTodoText: "",
-      todos: placeholderTodos
+      todos: []
     };
   },
   methods: {
