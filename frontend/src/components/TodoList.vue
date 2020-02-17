@@ -20,7 +20,7 @@
 import TodoListItem from "./TodoListItem.vue";
 
 let nextTodoId = 0;
-
+let offline = false;
 const API_BASE = "http://localhost:3000";
 
 export default {
@@ -44,47 +44,57 @@ export default {
         },
         err => {
           console.warn(err);
-          alert("Could not reach database");
+          offline = true;
+          alert("offline!");
+          // alert("Could not reach database");
         }
       );
     },
     addTodo() {
-      // trim() will convert '  abcde  ' -> 'abcde'
       // basic error handling, since we don't want unnecessary whitespace
       const trimmedText = this.newTodoText.trim();
       if (trimmedText) {
-        // make a POST request to /todolist that will add the taskId and task
-        this.$http
-          .post(`${API_BASE}/todolist`, {
-            id: nextTodoId,
-            item: trimmedText
-          })
-          .then(
-            success => {
-              console.log(success);
-              this.refresh();
-              this.newTodoText = "";
-            },
-            failure => {
-              console.warn(failure);
-              alert("Update Failed");
-            }
-          );
+        if (offline) {
+          this.todos.push({ id: nextTodoId++, item: trimmedText });
+          this.newTodoText = "";
+        } else {
+          // make a POST request to /todolist that will add the taskId and task
+          this.$http
+            .post(`${API_BASE}/todolist`, {
+              id: nextTodoId,
+              item: trimmedText
+            })
+            .then(
+              success => {
+                console.log(success);
+                this.refresh();
+                this.newTodoText = "";
+              },
+              failure => {
+                console.warn(failure);
+                // alert("Update Failed");
+              }
+            );
+        }
       }
     },
     removeTodo(idToRemove) {
-      // filter() runs a function (usually a lambda) on each element of a list
-      // it returns a list of items where the function returns true
-      this.$http.delete(`${API_BASE}/todolist/${idToRemove}`).then(
-        success => {
-          console.log(success);
-          this.refresh();
-        },
-        failure => {
-          console.warn(failure);
-          alert("Could not delete");
-        }
-      );
+      if (offline) {
+        this.todos = this.todos.filter(todo => todo.id !== idToRemove);
+      } else {
+        // filter() runs a function (usually a lambda) on each element of a list
+        // it returns a list of items where the function returns true
+        this.$http.delete(`${API_BASE}/todolist/${idToRemove}`).then(
+          success => {
+            console.log(success);
+            this.refresh();
+          },
+          failure => {
+            console.warn(failure);
+            // alert("Could not delete");
+          }
+        );
+      }
     }
   },
   beforeMount() {
